@@ -204,3 +204,32 @@ const styles = {
 };
 
 export default Tasks;
+
+
+/* 
+
+🧱 Step 1: Set up the tasks table in Supabase
+Go to Supabase Dashboard: https://supabase.com/
+
+Navigate to Table Editor → New Table
+
+Table name: tasks
+
+Add these columns:
+| Name         | Type      | Special                            |
+| ------------ | --------- | ---------------------------------- |
+| id           | UUID      | Primary Key (uuid\_generate\_v4()) |
+| user\_id     | UUID      | Foreign Key → `auth.users.id`      |
+| title        | Text      |                                    |
+| is\_complete | Boolean   | Default: `false`                   |
+| created\_at  | Timestamp | Default: now()                     |
+
+Ensure Row-Level Security (RLS) is enabled and add this policy:
+
+-- Allow authenticated users to access their own tasks
+CREATE POLICY "Users can access their own tasks"
+ON tasks
+FOR ALL
+USING (auth.uid() = user_id);
+
+*/

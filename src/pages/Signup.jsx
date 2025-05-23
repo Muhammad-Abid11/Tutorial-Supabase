@@ -26,3 +26,22 @@ const Signup = () => {
 };
 
 export default Signup;
+
+/* 
+✅ Step 1: Create Supabase Project
+Go to https://supabase.com
+
+Create a new project
+
+Go to Project Settings > API and copy:
+
+SUPABASE_URL
+
+SUPABASE_ANON_KEY
+
+Go to Authentication > Settings and enable Email + Password
+npx create-react-app supabase-todo
+cd supabase-todo
+npm install @supabase/supabase-js react-router-dom
+
+*/
