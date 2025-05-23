@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import AuthForm from '../components/AuthForm';
+import MagicLinkAuth from '../components/MagicLinkAuth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,13 +13,32 @@ const Login = () => {
     else navigate('/tasks');
   };
 
+  // Auth Session Check
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        navigate('/tasks');
+        return;
+      }
+    };
+
+    getSession();
+  }, []);
+
   return (
+  <>
     <div>
       <AuthForm type="login" onSubmit={handleLogin} />
       <p style={{ textAlign: 'center', marginTop: '15px' }}>
         Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
     </div>
+    <MagicLinkAuth />
+  </>
   );
 };
 

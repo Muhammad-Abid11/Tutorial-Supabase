@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import AuthForm from '../components/AuthForm';
 
 const Signup = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        navigate('/tasks');
+        return;
+      }
+    };
+
+    getSession();
+  }, []);
 
   const handleSignup = async (email, password) => {
     const { error } = await supabase.auth.signUp({ email, password });
