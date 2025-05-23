@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import { FaSignOutAlt, FaPlus, FaTrash, FaCheck } from 'react-icons/fa';
 
 const Tasks = () => {
   const [user, setUser] = useState(null);
@@ -8,7 +9,6 @@ const Tasks = () => {
   const [newTask, setNewTask] = useState('');
   const navigate = useNavigate();
 
-  // Fetch user session and tasks
   useEffect(() => {
     const getSessionAndTasks = async () => {
       const {
@@ -24,7 +24,7 @@ const Tasks = () => {
       fetchTasks(session.user.id);
     };
 
-    getSessionAndTasks(); //fetch user's session and tasks
+    getSessionAndTasks();
   }, []);
 
   const fetchTasks = async (userId) => {
@@ -77,31 +77,43 @@ const Tasks = () => {
   };
 
   return (
-    <div>
-      <h2>Welcome, {user?.email}</h2>
-      <button onClick={handleLogout}>Logout</button>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h2>Welcome, {user?.email}</h2>
+        <button onClick={handleLogout} style={styles.logoutButton}>
+          <FaSignOutAlt /> Logout
+        </button>
+      </div>
 
-      <form onSubmit={handleAddTask}>
+      <form onSubmit={handleAddTask} style={styles.form}>
         <input
           type="text"
           value={newTask}
           placeholder="New Task"
           onChange={(e) => setNewTask(e.target.value)}
+          style={styles.input}
         />
-        <button type="submit">Add Task</button>
+        <button type="submit" style={styles.addButton}>
+          <FaPlus /> Add
+        </button>
       </form>
 
-      <ul>
+      <ul style={styles.taskList}>
         {tasks.map((task) => (
-          <li key={task.id}>
+          <li key={task.id} style={styles.taskItem}>
             <span
               onClick={() => toggleComplete(task)}
-              style={{ textDecoration: task.is_complete ? 'line-through' : 'none', cursor: 'pointer' }}
+              style={{
+                ...styles.taskTitle,
+                textDecoration: task.is_complete ? 'line-through' : 'none',
+                color: task.is_complete ? 'gray' : '#333',
+              }}
             >
+              <FaCheck style={{ marginRight: '8px', color: task.is_complete ? 'green' : '#ccc' }} />
               {task.title}
             </span>
-            <button onClick={() => deleteTask(task.id)} style={{ marginLeft: '10px' }}>
-              Delete
+            <button onClick={() => deleteTask(task.id)} style={styles.deleteButton}>
+              <FaTrash />
             </button>
           </li>
         ))}
@@ -110,7 +122,85 @@ const Tasks = () => {
   );
 };
 
+// Inline CSS styles
+const styles = {
+  container: {
+    maxWidth: '600px',
+    margin: '40px auto',
+    padding: '20px',
+    borderRadius: '10px',
+    backgroundColor: '#f8f9fa',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+    fontFamily: 'Arial, sans-serif',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '20px',
+  },
+  logoutButton: {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '8px 14px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
+  form: {
+    display: 'flex',
+    marginBottom: '20px',
+    gap: '10px',
+  },
+  input: {
+    flex: 1,
+    padding: '10px',
+    fontSize: '16px',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+  },
+  addButton: {
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
+  taskList: {
+    listStyleType: 'none',
+    padding: 0,
+  },
+  taskItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '12px',
+    marginBottom: '8px',
+    backgroundColor: 'white',
+    border: '1px solid #ddd',
+    borderRadius: '5px',
+  },
+  taskTitle: {
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '16px',
+  },
+  deleteButton: {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '6px 10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+};
+
 export default Tasks;
-
-
-//2 CRUD operation

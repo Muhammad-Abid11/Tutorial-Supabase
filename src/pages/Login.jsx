@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import AuthForm from '../components/AuthForm';
 
@@ -12,8 +12,14 @@ const Login = () => {
     else navigate('/tasks');
   };
 
-  return <AuthForm type="login" onSubmit={handleLogin} />;
+  return (
+    <div>
+      <AuthForm type="login" onSubmit={handleLogin} />
+      <p style={{ textAlign: 'center', marginTop: '15px' }}>
+        Don't have an account? <Link to="/signup">Sign Up</Link>
+      </p>
+    </div>
+  );
 };
 
 export default Login;
-//1 auth
