@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import AuthForm from '../components/AuthForm';
 import MagicLinkAuth from '../components/MagicLinkAuth';
+import GoogleAuth from '../components/GoogleAuth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,6 +39,8 @@ const Login = () => {
       </p>
     </div>
     <MagicLinkAuth />
+    <hr />
+    <GoogleAuth />
   </>
   );
 };
