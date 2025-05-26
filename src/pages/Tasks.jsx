@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { FaSignOutAlt, FaPlus, FaTrash, FaCheck } from 'react-icons/fa';
+import UploadPage from './UploadPage';
 
 const Tasks = () => {
   const [user, setUser] = useState(null);
@@ -118,6 +119,8 @@ const Tasks = () => {
           </li>
         ))}
       </ul>
+
+      <UploadPage />
     </div>
   );
 };
