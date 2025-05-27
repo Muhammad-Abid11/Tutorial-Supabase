@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import AuthForm from '../components/AuthForm';
 import MagicLinkAuth from '../components/MagicLinkAuth';
 import GoogleAuth from '../components/GoogleAuth';
+import ForgotPassword from './ForgotPassword';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const Login = () => {
     <MagicLinkAuth />
     <hr />
     <GoogleAuth />
+    <ForgotPassword />
   </>
   );
 };
