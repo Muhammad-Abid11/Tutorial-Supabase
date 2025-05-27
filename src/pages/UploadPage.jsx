@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FileUploader from '../storage/FileUploader';
+import FileList from '../storage/FileList';
+import { supabase } from '../supabaseClient';
 
 const UploadPage = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const session = supabase.auth.getSession().then(({ data }) => {
+      setUser(data?.session?.user ?? null);
+    });
+
+    supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+  }, []);
+
+  if (!user) return <p>Please log in first</p>;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        backgroundColor: '#f0f0f0',
-      }}>
-      <h2>Upload a File</h2>
-      <FileUploader />
+    <div>
+      <h2>Upload & Manage Files</h2>
+      <FileUploader user={user} />
+      <hr />
+      <FileList user={user} />
     </div>
   );
 };
 
 export default UploadPage;
+
 
 
 /* 
