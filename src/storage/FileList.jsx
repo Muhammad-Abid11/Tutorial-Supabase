@@ -44,7 +44,7 @@ const FileList = ({ user }) => {
     
   };
 
-  const getPublicUrl = (name) =>
+  const getPublicUrl = (name) => // get the public URL for the file
     supabase.storage.from('uploads').getPublicUrl(`${user.email}/${name}`).data.publicUrl;
 
   return (
@@ -57,6 +57,8 @@ const FileList = ({ user }) => {
           {files.map((file) => (
             <li key={file.name}>
               <a href={getPublicUrl(file.name)} target="_blank" rel="noreferrer">
+              <img 
+                src={getPublicUrl(file.name)} alt={file.name} style={{ maxWidth: 200 }}/>
                 {file.name}
               </a>
               <button onClick={() => deleteFile(file.name)} style={{ marginLeft: 10 }}>
@@ -71,3 +73,34 @@ const FileList = ({ user }) => {
 };
 
 export default FileList;
+
+/* 
+🔧 Fix: Add Get Policy to Supabase Storage
+1. Go to your Supabase project
+Navigate to Storage → uploads (or your bucket name)
+
+2. Click on "Policies"
+3. Click "New Policy"
+4. Set the policy type to "Get"
+
+CREATE POLICY "Enable users to view their own data only" ON "storage"."objects"
+AS PERMISSIVE FOR SELECT
+TO authenticated
+USING ((select auth.uid()) = owner)
+
+👉 Now any authenticated user can get own uploaded files
+
+
+🔧 Fix: Add Delete Policy to Supabase Storage
+Same steps as above, but choose "Delete" policy type
+2. Click "New Policy"
+
+CREATE POLICY "Enable users to delete their own data only" ON "storage"."objects"
+AS PERMISSIVE FOR DELETE
+TO authenticated
+USING ((select auth.uid()) = owner)
+
+// This policy allows authenticated users to delete only their own files
+// The owner is the user who uploaded the file
+
+*/

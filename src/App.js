@@ -19,3 +19,10 @@ function App() {
 }
 
 export default App;
+
+
+/* 
+GPT conversation URL
+https://chatgpt.com/share/68427b1a-d9b8-8009-b8b9-e1709a2e99a2
+
+*/
